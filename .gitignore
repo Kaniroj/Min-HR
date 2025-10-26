@@ -1,0 +1,16 @@
+
+#Den ser till att känsliga eller temporära filer inte laddas upp till GitHub senare.
+# Python
+__pycache__/
+.venv/
+*.pyc
+
+# dlt
+dlt_pipeline/.dlt/
+
+# dbt
+dbt_hr/target/
+dbt_hr/logs/
+
+# miljöfil
+.env

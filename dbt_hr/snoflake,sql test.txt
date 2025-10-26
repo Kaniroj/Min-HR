@@ -1,0 +1,60 @@
+USE DATABASE HR_ANALYTICS;
+USE SCHEMA STAGING;
+SHOW TABLES;
+SELECT
+    headline,
+    employer__name AS employer,
+    occupation_field__label AS field,
+    publication_date
+FROM job_ads_resource
+LIMIT 20;
+SELECT
+    occupation_field__label AS occupation_field,
+    COUNT(*) AS total_ads
+FROM job_ads_resource
+GROUP BY occupation_field__label
+ORDER BY total_ads DESC;
+SELECT
+    employer__name AS employer,
+    COUNT(*) AS total_ads
+FROM job_ads_resource
+GROUP BY employer__name
+ORDER BY total_ads DESC
+LIMIT 10;
+SELECT
+    headline,
+    employer__name AS employer,
+    occupation_field__label AS field,
+    publication_date
+FROM job_ads_resource
+ORDER BY publication_date DESC
+LIMIT 10;
+USE DATABASE HR_ANALYTICS;
+USE SCHEMA STAGING;
+
+CREATE OR REPLACE VIEW ads_per_day AS
+SELECT
+    occupation_field__label AS occupation_field,
+    CAST(TO_TIMESTAMP_NTZ(publication_date) AS DATE) AS publication_day,
+    COUNT(*) AS total_ads
+FROM job_ads_resource
+GROUP BY occupation_field__label, CAST(TO_TIMESTAMP_NTZ(publication_date) AS DATE)
+ORDER BY publication_day DESC;
+SELECT *
+FROM ads_per_day
+WHERE occupation_field = 'Data/IT'
+ORDER BY publication_day DESC
+LIMIT 10;
+CREATE OR REPLACE VIEW ads_total_trend AS
+SELECT
+    CAST(TO_TIMESTAMP_NTZ(publication_date) AS DATE) AS publication_day,
+    COUNT(*) AS total_ads
+FROM job_ads_resource
+GROUP BY CAST(TO_TIMESTAMP_NTZ(publication_date) AS DATE)
+ORDER BY publication_day DESC;
+
+SHOW TABLES IN HR_ANALYTICS.STAGING;
+SELECT * FROM HR_ANALYTICS.TRANSFORMED.JOB_ADS_STAGING LIMIT 20;
+SELECT * 
+FROM HR_ANALYTICS.TRANSFORMED.JOB_ADS_STAGING
+LIMIT 10;
