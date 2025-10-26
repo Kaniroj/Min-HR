@@ -1,0 +1,7 @@
+dbt_hr:
+  outputs:
+    dev:
+      type: duckdb
+      path: C:\Users\aware\Documents\github\Projects\Min-HR\dbt_hr\min_hr.duckdb
+      schema: main
+  target: dev
